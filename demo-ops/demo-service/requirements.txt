@@ -1,0 +1,5 @@
+# Obsolete: the current demo-service uses only the Python standard library.
+# This file is retained only as a record of the original containerized design.
+Flask==3.1.1
+prometheus-client==0.22.1
+gunicorn==23.0.0

@@ -1,0 +1,32 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "type": "timeseries", "title": "Request rate (req/s)", "id": 1,
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "targets": [{"expr": "sum(rate(demo_http_requests_total{service=\"demo-service\"}[1m]))", "legendFormat": "requests/s", "refId": "A"}]
+    },
+    {
+      "type": "timeseries", "title": "5xx error rate (%)", "id": 2,
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "percent"}},
+      "targets": [{"expr": "100 * sum(rate(demo_http_requests_total{service=\"demo-service\",status=~\"5..\"}[1m])) / clamp_min(sum(rate(demo_http_requests_total{service=\"demo-service\"}[1m])), 0.000001)", "legendFormat": "5xx %", "refId": "A"}]
+    },
+    {
+      "type": "timeseries", "title": "P95 latency (ms)", "id": 3,
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "ms"}},
+      "targets": [{"expr": "1000 * histogram_quantile(0.95, sum by (le) (rate(demo_http_request_duration_seconds_bucket{service=\"demo-service\"}[1m])))", "legendFormat": "P95", "refId": "A"}]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 41,
+  "tags": ["opspilot", "demo"],
+  "templating": {"list": []},
+  "time": {"from": "now-15m", "to": "now"},
+  "timezone": "browser",
+  "title": "OpsPilot Demo Service",
+  "uid": "opspilot-demo-service",
+  "version": 1
+}
